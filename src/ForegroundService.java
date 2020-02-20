@@ -19,8 +19,8 @@ public class ForegroundService extends Service {
             startPluginForegroundService(intent.getExtras());
         } else {
             // Stop the service
-            // stopForeground(true);
-            // stopSelf();
+            stopForeground(true);
+            stopSelf();
         }
 
         return START_STICKY;
