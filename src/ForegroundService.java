@@ -1,6 +1,7 @@
 package com.davidbriglio.foreground;
 
 import android.content.Intent;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.app.Service;
 import android.app.Notification;
@@ -18,8 +19,8 @@ public class ForegroundService extends Service {
             startPluginForegroundService(intent.getExtras());
         } else {
             // Stop the service
-            stopForeground(true);
-            stopSelf();
+            // stopForeground(true);
+            // stopSelf();
         }
 
         return START_STICKY;
@@ -61,13 +62,17 @@ public class ForegroundService extends Service {
 
         // Get notification icon
         int icon = getResources().getIdentifier((String) extras.get("icon"), "drawable", context.getPackageName());
-
+        //cria a pendingIntent para ser aberta quando clicar no link
+        Intent notificationIntent = new Intent(ForegroundService.this, io.cordova.hellocordova.MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ForegroundService.this,
+                0, notificationIntent, 0);
         // Make notification
         Notification notification = new Notification.Builder(context, "foreground.service.channel")
             .setContentTitle((CharSequence) extras.get("title"))
             .setContentText((CharSequence) extras.get("text"))
             .setOngoing(true)
             .setSmallIcon(icon == 0 ? 17301514 : icon) // Default is the star icon
+            .setContentIntent(pendingIntent)
             .build();
 
         // Get notification ID
